@@ -6,6 +6,8 @@ import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 import ResRoutes from "../components/reservation/ResRoutes";
 import TableRoutes from "../components/tables/TablesRoutes";
+import { SearchByNumber } from "../components/search/SearchByNumber"
+
 
 /**
  * Defines all the routes for the application.
@@ -31,6 +33,9 @@ function Routes() {
       </Route>
       <Route path="/dashboard">
         <Dashboard date={today()} />
+      </Route>
+      <Route path="/search">
+        <SearchByNumber />
       </Route>
       <Route>
         <NotFound />

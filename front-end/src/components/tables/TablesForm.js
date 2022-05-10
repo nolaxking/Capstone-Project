@@ -4,76 +4,97 @@ import { createTable } from "../../utils/api";
 import ErrorAlert from "../../layout/ErrorAlert";
 
 function TablesForm() {
-  const his = useHistory();
-  const [error,setError]=useState()
-  const [form, setForm] = useState({
+  const history = useHistory();
+  const initialState = {
     table_name: "",
     capacity: 0,
-  });
-  async function handleCreate(event) {
-    event.preventDefault();
-    console.log(form)
-    try{
-      if(form.capacity===0)throw new Error("At least one seat.")
-      if(form.table_name.length < 2)throw new Error("Place enter a table name.")
-      await createTable(form);
-      his.push(`/dashboard`);
-    }
-    catch(err){setError(err.message)}
-   
-  }
-  function handleChange(event) {
-    event.preventDefault();
-
-    setForm({
-      ...form,
-      [event.target.name]: event.target.value,
+  };
+  const [formData, setFormData] = useState({ ...initialState });
+  const [tablesError, setTablesError] = useState(null);
+  const handleChange = ({ target }) => {
+    const value =
+      target.type === "number" ? Number(target.value) : target.value;
+    setFormData({
+      ...formData,
+      [target.name]: value,
     });
-  }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await createTable({ data: formData });
+      setFormData({ ...initialState });
+      history.push(`/dashboard`);
+    } catch (err) {
+      setTablesError({ message: err.response.data.error });
+    }
+  };
 
   return (
     <>
-      <form onSubmit={handleCreate}>
-        <div className="form-group">
-          <label htmlFor="tname">Table Name</label>
-          <input
-            name="table_name"
-            type="text"
-            className="form-control"
-            id="tname"
-            onChange={handleChange}
-            placeholder="Table #1"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="capacity">capacity</label>
-          <input
+      <form action="" onSubmit={handleSubmit}>
+        <ErrorAlert error={tablesError} />
+        <div className="card border-secondary mt-2">
+          <div className="card-header text-center bg-dark text-light">
+            <h2>Create a New Table</h2>
+          </div>
+          <div className="form-col d-flex justify-content-center">
+            <div className="form-group">
+              <label htmlFor="first_name" className="form-label">
+                Table name:
+                <input
+                  className="form-control border-secondary bg-light"
+                  placeholder="#x"
+                  id="table_name"
+                  type="text"
+                  name="table_name"
+                  onChange={handleChange}
+                  value={formData.table_name}
+                  required
+                />
+              </label>
 
-            name="capacity"
-            type="number"
-            className="form-control"
-            id="capacity"
-            onChange={handleChange}
-            placeholder="1"
-            required
-          />
-        </div>
-        <div>
-          <ErrorAlert error={error} />
-        </div>
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleCreate}
-          >
-            Submit
-          </button>
-
-          <button type="button" className="btn btn-danger" onClick={his.goBack}>
-            Cancel
-          </button>
+              <div className="form-group">
+                <label htmlFor="people" className="form-label">
+                  Capacity:
+                  <input
+                    className="form-control border-secondary bg-light"
+                    id="capacity"
+                    type="number"
+                    min="1"
+                    max="22"
+                    name="capacity"
+                    onChange={handleChange}
+                    value={formData.capacity}
+                    required
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className="form-row d-flex justify-content-center">
+            <div className="form-group mx-4">
+              <button
+                type="submit"
+                className="m-2 btn btn-sm btn-outline-info font-weight-bold"
+              >
+                <span className="oi oi-check"></span> Submit
+              </button>
+              <button
+                className="m-2 btn btn-sm btn-outline-danger font-weight-bold"
+                onClick={() => history.goBack()}
+              >
+                <span className="oi oi-x"></span> Cancel
+              </button>
+              <button
+                className="m-2 btn btn-sm btn-outline-warning font-weight-bold"
+                onClick={() => setFormData(initialState)}
+              >
+                <span className="oi oi-action-undo"></span> Reset
+              </button>
+            </div>
+          </div>
         </div>
       </form>
     </>
