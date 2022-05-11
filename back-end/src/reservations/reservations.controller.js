@@ -1,7 +1,7 @@
 const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-//vvvvvvvvvv validation middleware vvvvvvvvvvvvvvvv
+//validation middleware 
 
 //confirm that request body has valid fields; if not send error
 function hasValidFields(req, res, next) {
@@ -94,7 +94,7 @@ const has_reservation_date = bodyHasData("reservation_date");
 const has_reservation_time = bodyHasData("reservation_time");
 const has_people = bodyHasData("people");
 
-//vvvvvvv validate request properties vvvvvv
+//validate properties 
 function firstNamePropertyIsValid(req, res, next) {
   const {
     data: { first_name },
@@ -164,9 +164,9 @@ function initialStatusValid(req, res, next) {
   }
   return next();
 }
-//^^^^^^^^ !validate request properties ^^^^^^^^
 
-//vvvvvvv validate time and date properties vvvvvvvvvv
+
+// validate time and date properties 
 //verify valid time string
 function isTime(req, res, next) {
   const { data = {} } = req.body;
@@ -237,11 +237,9 @@ function isOpenHours(req, res, next) {
   }
   return next();
 }
-//^^^^^^^^ !validate time and date properties ^^^^^^^^
 
-//^^^^^^^^ !validation middleware ^^^^^^^^^^^^^^
 
-//vvvvvvvvvvvvv CRUDL vvvvvvvvvvvvvvvvvvvvvv
+// CRUDL 
 async function create(req, res, next) {
   const data = await service.create(req.body.data);
 
@@ -292,7 +290,7 @@ async function list(req, res) {
     });
   }
 }
-//^^^^^^^^^^^^^ !CRUDL^^^^^^^^^^^^^^^^^^^^^
+
 module.exports = {
   create: [
     hasValidFields,

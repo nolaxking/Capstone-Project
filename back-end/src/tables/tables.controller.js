@@ -2,9 +2,9 @@ const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const reservationsService = require("../reservations/reservations.service");
 
-//vvvvvvvvvvvvv validation middleware vvvvvvvvvvvvvvvv
 
-//vvvvvvv request body middleware vvvvvvv
+
+//request body middleware 
 //verify that request body has data
 function bodyHasData(req, res, next) {
   const body = req.body.data;
@@ -83,9 +83,9 @@ function capacityPropertyIsValid(req, res, next) {
     message: "Table capacity must be a whole number greater than zero.",
   });
 }
-//^^^^^^^^ request body middleware ^^^^^^^^^
+//request body middleware 
 
-//vvvvvv table middleware vvvvvvvv
+//table middleware
 //verify existing table
 async function tableIdExists(req, res, next) {
   const { table_id } = req.params;
@@ -130,9 +130,9 @@ function sufficientCapacity(req, res, next) {
       "Table capacity is not large enough for number of people in party.",
   });
 }
-//^^^^^^^^^ !table middleware ^^^^^^^^^
+// !table middleware 
 
-//vvvvvvvv reservation middleware vvvvvvv
+//reservation middleware
 //verify existing reservation
 async function resIdExists(req, res, next) {
   const {
@@ -159,11 +159,11 @@ function resNotSeated(req, res, next) {
     message: "Reservation is currently seated.",
   });
 }
-//^^^^^^^ !reservation middleware ^^^^^^^^
 
-//^^^^^^^^^^^^^^ !validation middleware ^^^^^^^^^^^^^^^^^
 
-//vvvvvvvvvvvvvv CRUDL vvvvvvvvvvvvvvvvv
+
+
+// CRUDL 
 async function create(req, res, next) {
   const data = await service.create(req.body.data);
 
@@ -199,7 +199,7 @@ async function list(req, res) {
     data,
   });
 }
-//^^^^^^^^^^^^^^ !CRUDL ^^^^^^^^^^^^^^^^^
+
 
 module.exports = {
   create: [
