@@ -52,6 +52,7 @@ export default function CreateResForm({ type }) {
       `${formData.reservation_date} ${formData.reservation_time}`
     );
     let currentDay = new Date();
+    
     try {
       if (newDate.getDay() === 2) throw new Error("Closed on Tuesdays!");
       if (newDate < currentDay) throw new Error("Not Available");

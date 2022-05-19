@@ -2,9 +2,7 @@ const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const reservationsService = require("../reservations/reservations.service");
 
-
-
-//request body middleware 
+//request body middleware
 //verify that request body has data
 function bodyHasData(req, res, next) {
   const body = req.body.data;
@@ -83,7 +81,7 @@ function capacityPropertyIsValid(req, res, next) {
     message: "Table capacity must be a whole number greater than zero.",
   });
 }
-//request body middleware 
+//request body middleware
 
 //table middleware
 //verify existing table
@@ -130,7 +128,7 @@ function sufficientCapacity(req, res, next) {
       "Table capacity is not large enough for number of people in party.",
   });
 }
-// !table middleware 
+// !table middleware
 
 //reservation middleware
 //verify existing reservation
@@ -160,10 +158,7 @@ function resNotSeated(req, res, next) {
   });
 }
 
-
-
-
-// CRUDL 
+// CRUDL
 async function create(req, res, next) {
   const data = await service.create(req.body.data);
 
@@ -199,7 +194,6 @@ async function list(req, res) {
     data,
   });
 }
-
 
 module.exports = {
   create: [

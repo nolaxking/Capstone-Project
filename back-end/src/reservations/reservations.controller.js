@@ -187,12 +187,10 @@ function isTime(req, res, next) {
 
 //verify that reservation request is not scheduled for date in the past.
 function dateIsFutureDate(req, res, next) {
-  const date = req.body.data.reservation_date;
+  const date = req.body.data.reservation_date +' '+ req.body.data.reservation_time ;
   const resDate = new Date(date);
   const today = new Date();
-  console.log(today.toLocaleString());
-  console.log(date);
-  console.log(resDate.toLocaleString());
+
   if (resDate >= today) {
     return next();
   }
